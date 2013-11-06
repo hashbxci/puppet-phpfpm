@@ -74,6 +74,7 @@ class phpfpm (
   if ($apc) {
     package { $phpfpm::params::apcpackage:
       ensure => $ensure,
+      notify => Service[$phpfpm::params::service],
     }
   }
 }
