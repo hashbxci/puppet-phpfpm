@@ -230,3 +230,12 @@ security.limit_extensions = <%= @limit_extensions %>
 ;php_value[session.save_handler] = files
 ;php_value[session.save_path] = /var/lib/php/session
 
+<% @php_admin.each do |item, value| -%>
+  php_admin_value[<%= item %>] = <%= value %>
+<% end -%>
+<% @php_flag.each do |item, value| -%>
+  php_flag[<%= item %>] = <%= value %>
+<% end -%>
+<% @php_value.each do |item, value| -%>
+  php_value[<%= item %>] = <%= value %>
+<% end -%>

@@ -36,7 +36,10 @@ class phpfpm (
   $status_path            = undef,
   $ping_path              = undef,
   $limit_extensions       = '.php',
-  $ensure                  = 'present'
+  $ensure                 = 'present',
+  $php_admin              = undef,
+  $php_flag               = undef,
+  $php_value              = undef,
   ) {
 
   include phpfpm::params
