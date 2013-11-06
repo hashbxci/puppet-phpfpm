@@ -16,4 +16,11 @@ class phpfpm::params {
   $config = $::osfamily ? {
     default => '/etc/php-fpm.d/www.conf'
   }
+
+  $apcpackage = $::osfamily ? {
+    'Debian' => 'php-apc',
+    default  => 'php-pecl-apc'
+  }
+
+
 }

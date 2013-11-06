@@ -40,6 +40,7 @@ class phpfpm (
   $php_admin              = undef,
   $php_flag               = undef,
   $php_value              = undef,
+  $apc                    = false,
   ) {
 
   include phpfpm::params
@@ -68,5 +69,11 @@ class phpfpm (
     content => template('phpfpm/www.conf.erb'),
     notify  => Service[$phpfpm::params::service],
     require => Package[$phpfpm::params::package],
+  }
+
+  if ($apc) {
+    package { $phpfpm::params::apcpackage:
+      ensure => $ensure,
+    }
   }
 }
