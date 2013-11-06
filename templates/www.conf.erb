@@ -229,13 +229,18 @@ security.limit_extensions = <%= @limit_extensions %>
 ; Set session path to a directory owned by process user
 ;php_value[session.save_handler] = files
 ;php_value[session.save_path] = /var/lib/php/session
-
-<% @php_admin.each do |item, value| -%>
-  php_admin_value[<%= item %>] = <%= value %>
+<% if @php_admin -%>
+  <% @php_admin.each do |item, value| -%>
+    php_admin_value[<%= item %>] = <%= value %>
+  <% end -%>
 <% end -%>
-<% @php_flag.each do |item, value| -%>
-  php_flag[<%= item %>] = <%= value %>
+<% if @php_flag -%>
+  <% @php_flag.each do |item, value| -%>
+    php_flag[<%= item %>] = <%= value %>
+  <% end -%>
 <% end -%>
-<% @php_value.each do |item, value| -%>
-  php_value[<%= item %>] = <%= value %>
+<% if @php_value -%>
+  <% @php_value.each do |item, value| -%>
+    php_value[<%= item %>] = <%= value %>
+  <% end -%>
 <% end -%>
