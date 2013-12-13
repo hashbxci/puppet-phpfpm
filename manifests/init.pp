@@ -41,10 +41,10 @@ class phpfpm (
   $php_flag               = undef,
   $php_value              = undef,
   $apc                    = false,
+  $user                   = $phpfpm::params::user
   ) {
 
   include phpfpm::params
-  $user = $phpfpm::params::user
 
   $serviceensure = $ensure ? {
     'present' => 'running',
