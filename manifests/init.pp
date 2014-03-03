@@ -12,17 +12,15 @@
 #
 # === Examples
 #
-#  class { phpfpm:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ]
-#  }
+#  class { phpfpm:  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Author Name <sam@bashton.com>
 #
 # === Copyright
 #
-# Copyright 2013 Bashton Ltd
+# Copyright 2013-2014 Bashton Ltd
 #
 class phpfpm (
   $listen                 = '127.0.0.1:9000',
@@ -41,40 +39,43 @@ class phpfpm (
   $php_flag               = undef,
   $php_value              = undef,
   $apc                    = false,
-  $user                   = $phpfpm::params::user
-  ) {
+  $user                   = $phpfpm::params::user,
+  $package                = $phpfpm::params::package,
+  $apcpackage             = $phpfpm::params::apcpackage,
+  $service                = $phpfpm::params::service,
+  $config                 = $phpfpm::params::config
+  ) inherits params {
 
-  include phpfpm::params
 
   $serviceensure = $ensure ? {
     'present' => 'running',
     'absent'  => 'stopped'
   }
 
-  package { $phpfpm::params::package:
+  package { $package:
     ensure => $ensure,
   }
 
-  service { $phpfpm::params::service:
+  service { $service:
     ensure  => $serviceensure,
-    require => Package[$phpfpm::params::package],
+    require => Package[$package],
     enable  => true,
   }
 
-  file { $phpfpm::params::config:
+  file { $config:
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     content => template('phpfpm/www.conf.erb'),
-    notify  => Service[$phpfpm::params::service],
-    require => Package[$phpfpm::params::package],
+    notify  => Service[$service],
+    require => Package[$package],
   }
 
   if ($apc) {
-    package { $phpfpm::params::apcpackage:
+    package { $apcpackage:
       ensure => $ensure,
-      notify => Service[$phpfpm::params::service],
+      notify => Service[$service],
     }
   }
 }
