@@ -11,11 +11,11 @@
 ;                            specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = <%= @listen %>
+listen = <%= scope.lookupvar('phpfpm::listen') %>
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
 ; Default Value: -1
-listen.backlog = <%= @listen_backlog %>
+listen.backlog = <%= scope.lookupvar('phpfpm::listen_backlog') %>
  
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
@@ -23,7 +23,7 @@ listen.backlog = <%= @listen_backlog %>
 ; must be separated by a comma. If this value is left blank, connections will be
 ; accepted from any ip address.
 ; Default Value: any
-listen.allowed_clients = <%= @listen_allowed_clients %>
+listen.allowed_clients = <%= scope.lookupvar('phpfpm::listen_allowed_clients') %>
 
 ; Set permissions for unix socket, if one is used. In Linux, read/write
 ; permissions must be set in order to allow connections from a web server. Many
@@ -38,9 +38,9 @@ listen.allowed_clients = <%= @listen_allowed_clients %>
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
 ; RPM: apache Choosed to be able to access some dir as httpd
-user = <%= @user %>
+user = <%= scope.lookupvar('phpfpm::user') %>
 ; RPM: Keep a group allowed to write in log dir.
-group = <%= @user %>
+group = <%= scope.lookupvar('phpfpm::user') %>
 
 ; Choose how the process manager will control the number of child processes.
 ; Possible Values:
@@ -69,28 +69,28 @@ pm = dynamic
 ; CGI.
 ; Note: Used when pm is set to either 'static' or 'dynamic'
 ; Note: This value is mandatory.
-pm.max_children = <%= @max_children %>
+pm.max_children = <%= scope.lookupvar('phpfpm::max_children') %>
 
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
-pm.start_servers = <%= @start_servers %>
+pm.start_servers = <%= scope.lookupvar('phpfpm::start_servers') %>
 
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.min_spare_servers = <%= @min_spare_servers %>
+pm.min_spare_servers = <%= scope.lookupvar('phpfpm::min_spare_servers') %>
 
 ; The desired maximum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.max_spare_servers = <%= @max_spare_servers %>
+pm.max_spare_servers = <%= scope.lookupvar('phpfpm::max_spare_servers') %>
  
 ; The number of requests each child process should execute before respawning.
 ; This can be useful to work around memory leaks in 3rd party libraries. For
 ; endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.
 ; Default Value: 0
-pm.max_requests = <%= @max_requests %>
+pm.max_requests = <%= scope.lookupvar('phpfpm::max_requests') %>
 
 ; The URI to view the FPM status page. If this value is not set, no URI will be
 ; recognized as a status page. By default, the status page shows the following
@@ -120,8 +120,8 @@ pm.max_requests = <%= @max_requests %>
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set 
-<% if @status_path -%>
-  pm.status_path = <%= @status_path %>
+<% if scope.lookupvar('phpfpm::status_path') -%>
+  pm.status_path = <%= scope.lookupvar('phpfpm::status_path') %>
 <% end -%>
  
 ; The ping URI to call the monitoring page of FPM. If this value is not set, no
@@ -134,8 +134,8 @@ pm.max_requests = <%= @max_requests %>
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set
-<% if @ping_path -%>
-  ping.path = <%= @ping_path %>
+<% if scope.lookupvar('phpfpm::ping_path') -%>
+  ping.path = <%= scope.lookupvar('phpfpm::ping_path') %>
 <% end -%>
 
 ; This directive may be used to customize the response of a ping request. The
@@ -193,7 +193,7 @@ slowlog = /var/log/php-fpm/www-slow.log
 ; exectute php code.
 ; Note: set an empty value to allow all extensions.
 ; Default Value: .php
-security.limit_extensions = <%= @limit_extensions %>
+security.limit_extensions = <%= scope.lookupvar('phpfpm::limit_extensions') %>
 
 ; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
 ; the current environment.
@@ -229,18 +229,18 @@ security.limit_extensions = <%= @limit_extensions %>
 ; Set session path to a directory owned by process user
 ;php_value[session.save_handler] = files
 ;php_value[session.save_path] = /var/lib/php/session
-<% if @php_admin -%>
-  <% @php_admin.each do |item, value| -%>
+<% if scope.lookupvar('phpfpm::php_admin') -%>
+  <% scope.lookupvar('phpfpm::php_admin').each do |item, value| -%>
     php_admin_value[<%= item %>] = <%= value %>
   <% end -%>
 <% end -%>
-<% if @php_flag -%>
-  <% @php_flag.each do |item, value| -%>
+<% if scope.lookupvar('phpfpm::php_flag') -%>
+  <% scope.lookupvar('phpfpm::php_flag').each do |item, value| -%>
     php_flag[<%= item %>] = <%= value %>
   <% end -%>
 <% end -%>
-<% if @php_value -%>
-  <% @php_value.each do |item, value| -%>
+<% if scope.lookupvar('phpfpm::php_value') -%>
+  <% scope.lookupvar('phpfpm::php_value').each do |item, value| -%>
     php_value[<%= item %>] = <%= value %>
   <% end -%>
 <% end -%>

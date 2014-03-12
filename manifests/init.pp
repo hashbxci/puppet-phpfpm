@@ -35,9 +35,9 @@ class phpfpm (
   $ping_path              = undef,
   $limit_extensions       = '.php',
   $ensure                 = 'present',
-  $php_admin              = undef,
-  $php_flag               = undef,
-  $php_value              = undef,
+  $php_admin              = {},
+  $php_flag               = {},
+  $php_value              = {},
   $apc                    = false,
   $user                   = $phpfpm::params::user,
   $package                = $phpfpm::params::package,
@@ -52,30 +52,19 @@ class phpfpm (
     'absent'  => 'stopped'
   }
 
-  package { $package:
-    ensure => $ensure,
-  }
-
-  service { $service:
-    ensure  => $serviceensure,
-    require => Package[$package],
-    enable  => true,
-  }
-
-  file { $config:
-    ensure  => $ensure,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('phpfpm/www.conf.erb'),
-    notify  => Service[$service],
-    require => Package[$package],
+  class { 'phpfpm::install': } ->
+  class { 'phpfpm::config':
+    ensure      => $ensure,
+    config_file => $config,
+  } ~>
+  class { 'phpfpm::service':
+    ensure => $serviceensure,
   }
 
   if ($apc) {
-    package { $apcpackage:
-      ensure => $ensure,
-      notify => Service[$service],
+    class { 'phpapc':
+      # require => Class['phpfpm::install'],
+      # notify  => Class['phpfpm::service'],
     }
   }
 }

@@ -11,6 +11,14 @@ describe 'phpfpm' do
 
         it { should compile.with_all_deps }
         it { should contain_class('phpfpm::params') }
+        it { should contain_class('phpfpm::install').that_comes_before('phpfpm::config') }
+        it { should contain_class('phpfpm::config') }
+        it { should contain_class('phpfpm::service') }
+
+        it { should contain_package('php-fpm') }
+        it { should contain_service('php-fpm') }
+      it { should contain_file('/etc/php-fpm.d/www.conf') }
+ 
       end
     end
   end

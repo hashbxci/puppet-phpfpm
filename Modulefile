@@ -1,11 +1,11 @@
 name    'bashtoni-phpfpm'
-version '0.0.2'
+version '1.0.0'
 source 'UNKNOWN'
 author 'bashtoni'
 license 'MIT'
-summary 'UNKNOWN'
-description 'UNKNOWN'
-project_page 'UNKNOWN'
+summary 'Install and configure PHP-FPM'
+description 'Install the PHP FPM package and configure the service'
+project_page 'https://github.com/BashtonLtd/puppet-phpfpm'
 
 ## Add dependencies, if any:
-# dependency 'username/name', '>= 1.2.0'
+dependency 'bashtoni/phpapc', '>= 1.0.0'
