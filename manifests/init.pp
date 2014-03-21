@@ -31,6 +31,8 @@ class phpfpm (
   $min_spare_servers      = 5,
   $max_spare_servers      = 10,
   $max_requests           = 500,
+  $max_open_files         = 16384,
+  $slow_time              = 0,
   $status_path            = undef,
   $ping_path              = undef,
   $limit_extensions       = '.php',

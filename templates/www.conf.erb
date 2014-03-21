@@ -154,7 +154,7 @@ pm.max_requests = <%= scope.lookupvar('::phpfpm::max_requests') %>
 ; dumped to the 'slowlog' file. A value of '0s' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-;request_slowlog_timeout = 0
+request_slowlog_timeout = <%= scope.lookupvar('::phpfpm::slow_time') %>
  
 ; The log file for slow requests
 ; Default Value: not set
@@ -163,7 +163,7 @@ slowlog = /var/log/php-fpm/www-slow.log
  
 ; Set open file descriptor rlimit.
 ; Default Value: system defined value
-;rlimit_files = 1024
+rlimit_files = <%= scope.lookupvar('::phpfpm::max_open_files') %>
  
 ; Set max core size rlimit.
 ; Possible Values: 'unlimited' or an integer greater or equal to 0
