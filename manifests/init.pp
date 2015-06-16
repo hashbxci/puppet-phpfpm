@@ -46,7 +46,7 @@ class phpfpm (
   $apcpackage             = $phpfpm::params::apcpackage,
   $service                = $phpfpm::params::service,
   $config                 = $phpfpm::params::config
-  ) inherits params {
+  ) inherits phpfpm::params {
 
 
   $serviceensure = $ensure ? {
