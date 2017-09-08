@@ -8,8 +8,8 @@ class phpfpm::service ($ensure = running) {
   }
 
   service { $phpfpm::service:
-    ensure  => $ensure,
-    enable  => $enable,
+    ensure => $ensure,
+    enable => $enable,
   }
 
 }
