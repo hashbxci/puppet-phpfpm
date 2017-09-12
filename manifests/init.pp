@@ -54,17 +54,21 @@ class phpfpm (
     'absent'  => 'stopped'
   }
 
-  class { 'phpfpm::install': } ->
-  class { 'phpfpm::config':
+  class { '::phpfpm::install': }
+
+  class { '::phpfpm::config':
     ensure      => $ensure,
     config_file => $config,
-  } ~>
-  class { 'phpfpm::service':
-    ensure => $serviceensure,
+    require     => Class['::phpfpm::install']
+  }
+
+  class { '::phpfpm::service':
+    ensure    => $serviceensure,
+    subscribe => Class['::phpfpm::config']
   }
 
   if ($apc) {
-    class { 'phpapc':
+    class { '::phpapc':
       # require => Class['phpfpm::install'],
       # notify  => Class['phpfpm::service'],
     }
